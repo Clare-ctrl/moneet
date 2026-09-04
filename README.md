@@ -4,6 +4,10 @@
 
 Moneet is a simple personal finance tracker built with React. It allows users to record income and expenses, organize transactions by category, and keep track of their current balance.
 
+## Live Demo
+
+https://moneet.vercel.app/
+
 ## Features
 
 - Add income and expense transactions
