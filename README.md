@@ -1,16 +1,64 @@
-# React + Vite
+# Moneet
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Keep Your Money Neat.**
 
-Currently, two official plugins are available:
+Moneet is a simple personal finance tracker built with React. It allows users to record income and expenses, organize transactions by category, and keep track of their current balance.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features
 
-## React Compiler
+- Add income and expense transactions
+- Categorize transactions
+- View recent transactions grouped by date
+- Track total income and expenses
+- Calculate current balance
+- Store transaction data locally using `localStorage`
+- Responsive and minimal UI
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tech Stack
 
-## Expanding the ESLint configuration
+- React
+- Vite
+- Tailwind CSS
+- JavaScript
+- Browser Local Storage
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Getting Started
+
+Clone the repository:
+
+```bash
+git clone https://github.com/Clare-ctrl/moneet.git
+cd moneet
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+## Planned Features
+
+Moneet is still under development. Future features may include:
+
+- Custom income and expense categories
+- Settings page
+- English and Chinese language support
+- USD and CNY currency support
+- Monthly spending analysis
+- Category-based spending insights
+- Starting balance customization
+
+## Data Storage
+
+Moneet currently uses browser `localStorage` to save transaction data. Data stays in the user's browser and does not require an account or backend.
+
+## Author
+
+Mengmeng Fang
