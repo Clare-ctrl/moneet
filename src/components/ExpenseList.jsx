@@ -1,7 +1,10 @@
+import { useState } from 'react';
 import categories from '../data/categories.js';
 import earnings from '../data/earnings.js';
 
-export default function ExpenseList({ transactions }) {
+export default function ExpenseList({ transactions, onDelete, onEdit }) {
+    const [selectedTransaction, setSelectedTransaction] = useState(null);
+
     const totalExpense = transactions
         .filter((transaction) => transaction.type === "expense")
         .reduce(
@@ -82,7 +85,8 @@ export default function ExpenseList({ transactions }) {
                         <h3 className="mb-1 text-xs font-semibold text-zinc-400">{formatDate(date)}</h3>
                         {items.map((transaction) => (
                             <div key={transaction.id}
-                                className="flex items-center justify-between border-b border-zinc-100 py-4">
+                                onClick={() => setSelectedTransaction(transaction)}
+                                className="flex cursor-pointer items-center justify-between border-b border-zinc-100 py-4">
                                 <div className="flex items-center gap-4">
                                     <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-indigo-50 text-xl">
                                         {getCategoryIcon(transaction)}
@@ -100,6 +104,34 @@ export default function ExpenseList({ transactions }) {
                     </div>
                 ))}
             </div>
+            {selectedTransaction && (
+                <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/30'
+                    onClick={() => setSelectedTransaction(null)}>
+                    <div className='w-72 rounded-2xl bg-white p-6 shadow-xl'
+                        onClick={(e) => e.stopPropagation()}>
+                        <p className='mb-4 font-medium text-zinc-800'>
+                            {selectedTransaction.category}
+                        </p>
+                        <div className='flex gap-3'>
+                            <button
+                                onClick={() => {
+                                    onEdit(selectedTransaction);
+                                    setSelectedTransaction(null);
+                                }}
+                                className='flex-1 rounded-xl border py-2 hover:bg-indigo-200 border-zinc-50'>
+                                Edit
+                            </button>
+                            <button className='flex-1 rounded-xl border hover:bg-indigo-200 border-zinc-50 py-2'
+                                onClick={() => {
+                                    onDelete(selectedTransaction.id);
+                                    setSelectedTransaction(null);
+                                }}>
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

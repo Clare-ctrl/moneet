@@ -18,15 +18,27 @@ function App() {
   });
 
   const modal = useRef();
+  const [editingTransaction, setEditingTransaction] = useState(null);
 
   function handleAddTransaction() {
+    setEditingTransaction(null);
     modal.current.open();
   }
   function handleSaveTransaction(newTransaction) {
-    setTransactions((prev) => [
-      ...prev,
-      newTransaction
-    ]);
+    if (editingTransaction) {
+      setTransactions((prev) =>
+        prev.map((transaction) =>
+          transaction.id === newTransaction.id
+            ? newTransaction
+            : transaction
+    ));
+    setEditingTransaction(null);
+    } else {
+      setTransactions((prev) => [
+        ...prev,
+        newTransaction
+      ]);
+    }
   }
   useEffect(() => {
     localStorage.setItem(
@@ -35,9 +47,22 @@ function App() {
     );
   }, [transactions]);
 
+  function handleDeleteTransaction(id) {
+    setTransactions((prev) =>
+      prev.filter((transaction) => transaction.id !== id)
+    );
+  }
+
+
+
+  function handleEditTransaction(transaction) {
+    setEditingTransaction(transaction);
+    modal.current.open();
+  }
+
   return (
     <>
-      <AddTransactionModal ref={modal} onSave={handleSaveTransaction} />
+      <AddTransactionModal ref={modal} onSave={handleSaveTransaction} transaction={editingTransaction} />
       <div className='min-h-screen bg-zinc-100 p-4 sm:p-6'>
         <div className='mx-auto mt-10 w-full max-w-2xl overflow-hidden rounded-2xl border border-zinc-200 bg-white'>
           <Header />
@@ -45,7 +70,8 @@ function App() {
             {transactions.length === 0 ? (
               <EmptyState />
             ) : (
-              <ExpenseList transactions={transactions} />
+              <ExpenseList transactions={transactions} onDelete={handleDeleteTransaction}
+                onEdit={handleEditTransaction} />
             )}
           </main>
           <div className='flex justify-center pb-12'>

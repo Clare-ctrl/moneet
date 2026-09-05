@@ -1,9 +1,9 @@
-import { forwardRef, useImperativeHandle, useRef, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import categories from '../data/categories.js';
 import earnings from "../data/earnings";
 
-const AddTransactionModal = forwardRef(function AddTransactionModal({ onClose, onSave }, ref) {
+const AddTransactionModal = forwardRef(function AddTransactionModal({ onClose, onSave, transaction }, ref) {
     const dialog = useRef();
 
     useImperativeHandle(ref, () => {
@@ -31,17 +31,13 @@ const AddTransactionModal = forwardRef(function AddTransactionModal({ onClose, o
 
     function handleSave() {
         const newTransaction = {
-            id: Date.now(),
+            id: transaction ? transaction.id : Date.now(),
             type,
             amount: Number(amount),
             category: category,
             date: date,
             note: note,
         };
-
-
-
-
         if (!amount || !category || !date) {
             return;
         }
@@ -64,6 +60,23 @@ const AddTransactionModal = forwardRef(function AddTransactionModal({ onClose, o
 
         dialog.current.close();
     }
+
+    useEffect(() => {
+        if (transaction) {
+            setType(transaction.type);
+            setAmount(transaction.amount);
+            setCategory(transaction.category);
+            setDate(transaction.date);
+            setNote(transaction.note);
+        } else {
+            setType("expense");
+            setAmount("");
+            setCategory("");
+            setDate("");
+            setNote("");
+            setError("");
+        }
+    }, [transaction]);
 
     return createPortal(
         <dialog ref={dialog}
@@ -93,7 +106,7 @@ const AddTransactionModal = forwardRef(function AddTransactionModal({ onClose, o
                     <div className="bg-indigo-50 my-5 p-5 rounded-2xl">
                         <label className="mb-2 block text-sm font-medium text-zinc-700">
                             {type === "expense" ? "Expense Amount" : "Income Amount"}
-                            </label>
+                        </label>
                         <input className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-800 outline-none transition
                      focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
                             type="number"
@@ -105,7 +118,7 @@ const AddTransactionModal = forwardRef(function AddTransactionModal({ onClose, o
                     <div className="my-5 bg-indigo-50 p-5 rounded-2xl">
                         <label className="mb-4 block text-sm font-semibold tracking-tight text-zinc-700">
                             {type === "expense" ? "Expense Category" : "Income Category"}
-                            </label>
+                        </label>
                         <div className='grid grid-cols-3 sm:grid-cols-4 gap-3'>
                             {currentCategories.map((item) => (
                                 <button key={item.name} type='button' onClick={() => setCategory(item.name)}
