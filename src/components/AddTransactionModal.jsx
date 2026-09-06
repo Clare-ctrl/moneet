@@ -135,7 +135,7 @@ const AddTransactionModal = forwardRef(function AddTransactionModal({ onClose, o
                         />
                     </div>
                     <div className="my-5 bg-indigo-50 p-5 rounded-2xl">
-                        <label className="mb-4 block text-sm font-semibold tracking-tight text-zinc-700">
+                        <label className="mb-4 block text-sm font-medium text-zinc-700">
                             {type === "expense" ? "Expense Category" : "Income Category"}
                         </label>
                         <div className='grid grid-cols-3 gap-2 sm:grid-cols-4 sm:gap-3'>

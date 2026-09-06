@@ -6,9 +6,12 @@ import ExpenseList from './components/ExpenseList';
 import AddTransactionButton from './components/AddTransactionButton';
 import AddTransactionModal from './components/AddTransactionModal';
 import initialTransactions from './data/fakedata.js';
-
+import MonthlyAnalysis from './components/MonthlyAnalysis.jsx';
 
 function App() {
+
+  const [page, setPage] = useState("home");
+
   const [transactions, setTransactions] = useState(() => {
     const savedTransactions = localStorage.getItem("transactions");
     if (savedTransactions) {
@@ -31,8 +34,8 @@ function App() {
           transaction.id === newTransaction.id
             ? newTransaction
             : transaction
-    ));
-    setEditingTransaction(null);
+        ));
+      setEditingTransaction(null);
     } else {
       setTransactions((prev) => [
         ...prev,
@@ -53,8 +56,6 @@ function App() {
     );
   }
 
-
-
   function handleEditTransaction(transaction) {
     setEditingTransaction(transaction);
     modal.current.open();
@@ -69,14 +70,21 @@ function App() {
           <main className='pt-6 px-6 mx-5'>
             {transactions.length === 0 ? (
               <EmptyState />
-            ) : (
+            ) : (page === "home" ? (
               <ExpenseList transactions={transactions} onDelete={handleDeleteTransaction}
-                onEdit={handleEditTransaction} />
+                onEdit={handleEditTransaction}
+                onOpenAnalysis={() => setPage("analysis")} />
+            ) : (
+              <MonthlyAnalysis transactions={transactions} onBack={() => setPage("home")} />
+            )
             )}
           </main>
-          <div className='flex justify-center pb-12'>
-            <AddTransactionButton onClick={handleAddTransaction} />
-          </div>
+          {page === "analysis" ? null : (
+            <div className='flex justify-center pb-12'>
+              <AddTransactionButton onClick={handleAddTransaction} />
+            </div>)
+          }
+
         </div>
       </div>
     </>

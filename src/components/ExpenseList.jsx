@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import categories from '../data/iconPool.js';
 import earnings from '../data/earnings.js';
+import MonthlyAnalysis from './MonthlyAnalysis.jsx';
 
 export default function ExpenseList({ transactions, onDelete, onEdit, onOpenAnalysis }) {
     const [selectedTransaction, setSelectedTransaction] = useState(null);
@@ -68,7 +69,7 @@ export default function ExpenseList({ transactions, onDelete, onEdit, onOpenAnal
     return (
         <div className="flex flex-col gap-4 py-2">
             <div className='mb-6 rounded-2xl bg-indigo-50 p-5'>
-                <div  className='flex items-start justify-between gap-5'>
+                <div className='flex items-start justify-between gap-5'>
                     <div>
                         <p className='text-sm font-medium text-zinc-500'>
                             Current Balance
@@ -111,11 +112,13 @@ export default function ExpenseList({ transactions, onDelete, onEdit, onOpenAnal
                     .sort(([monthA], [monthB]) => monthB.localeCompare(monthA))
                     .map(([month, dates]) => (
                         <div key={month}>
-                            <button type='button' onClick={() => setOpenMonth(openMonth === month ? null : month)}
-                                className='flex w-full items-center justify-between py-3 text-left'>
+                            <div className='flex w-full items-center justify-between py-3'>
                                 <span className='font-semibold text-zinc-700'>{formatMonth(month)}</span>
-                                <span className='text-zinc-400'>{openMonth === month ? "▲" : "▼"}</span>
-                            </button>
+                                <button type='button' onClick={() => setOpenMonth(openMonth === month ? null : month)}
+                                    className='flex h-8 w-8 items-center justify-center rounded-lg text-zinc-400 hover:bg-zinc-100'>
+                                    {openMonth === month ? "▲" : "▼"}
+                                </button>
+                            </div>
                             {openMonth === month &&
                                 (<div>
                                     {Object.entries(dates)
