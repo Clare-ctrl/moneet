@@ -14,7 +14,8 @@ const frequentCategories = [
     "Rent",
     "Health",
     "Education",
-    "Entertainment"
+    "Entertainment",
+    "Other"
 ];
 
 
@@ -150,12 +151,13 @@ const AddTransactionModal = forwardRef(function AddTransactionModal({ onClose, o
                             ))}
                         </div>
                     </div>
-                    <div className="bg-indigo-50 my-5 p-5 rounded-2xl">
+                    <div className="bg-indigo-50 my-5 p-4 sm:p-5 rounded-2xl">
                         <label className="mb-2 block text-sm font-medium text-zinc-700">
                             {type === "expense" ? "Expense Date" : "Income Date"}
                         </label>
                         <input className="w-full min-w-0 max-w-full
-                        rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-800 outline-none transition
+                        appearance-none
+                        rounded-xl border border-zinc-200 bg-white px-4 py-3 text-base sm:text-sm text-zinc-800 outline-none transition
                      focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
                             type="date"
                             value={date}

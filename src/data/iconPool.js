@@ -9,10 +9,12 @@ const iconPool = [
     { name: "Rent", icon: "🏠" },
     { name: "Bills", icon: "💡" },
     { name: "Health", icon: "💊" },
-    { name: "Entertainment", icon: "🎬" },
+    { name: "Beauty", icon: "💄"},
+    { name: "Entertainment", icon: "🎮" },
     { name: "Travel", icon: "✈️" },
     { name: "Education", icon: "📚" },
     { name: "Gift", icon: "🎁" },
+    { name: "Subscription", icon: "💳"},
     { name: "Other", icon: "•••" },
 ];
 export default iconPool;
