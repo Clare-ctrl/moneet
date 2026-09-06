@@ -1,7 +1,22 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import categories from '../data/categories.js';
 import earnings from "../data/earnings";
+import iconPool from "../data/iconPool.js";
+
+const frequentCategories = [
+    "Food",
+    "Grocery",
+    "Coffee",
+    "Transport",
+    "Shopping",
+    "Housing",
+    "Technology",
+    "Rent",
+    "Health",
+    "Education",
+    "Entertainment"
+];
+
 
 const AddTransactionModal = forwardRef(function AddTransactionModal({ onClose, onSave, transaction }, ref) {
     const dialog = useRef();
@@ -22,6 +37,8 @@ const AddTransactionModal = forwardRef(function AddTransactionModal({ onClose, o
     const [date, setDate] = useState("");
     const [note, setNote] = useState("");
     const [error, setError] = useState("");
+    const categories = iconPool.filter((item) =>
+        frequentCategories.includes(item.name));
 
     const currentCategories = type === "expense" ? categories : earnings;
     function handleTypeSelection(selectedType) {

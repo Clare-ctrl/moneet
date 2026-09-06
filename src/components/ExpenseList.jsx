@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import categories from '../data/categories.js';
+import categories from '../data/iconPool.js';
 import earnings from '../data/earnings.js';
 
 export default function ExpenseList({ transactions, onDelete, onEdit }) {
