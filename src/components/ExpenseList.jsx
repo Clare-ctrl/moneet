@@ -4,6 +4,9 @@ import earnings from '../data/earnings.js';
 
 export default function ExpenseList({ transactions, onDelete, onEdit }) {
     const [selectedTransaction, setSelectedTransaction] = useState(null);
+    const [openMonth, setOpenMonth] = useState(
+        new Date().toISOString().slice(0, 7)
+    );
 
     const totalExpense = transactions
         .filter((transaction) => transaction.type === "expense")
@@ -18,13 +21,17 @@ export default function ExpenseList({ transactions, onDelete, onEdit }) {
     const startingBalance = 0;
     const currentBalance = startingBalance + totalIncome - totalExpense;
 
-    const groupedTransactions = {};
-    transactions.forEach((transaction) => {
-        if (!groupedTransactions[transaction.date]) {
-            groupedTransactions[transaction.date] = [];
-        }
+    const groupedByMonth = {};
 
-        groupedTransactions[transaction.date].push(transaction);
+    transactions.forEach((transaction) => {
+        const monthKey = transaction.date.slice(0, 7);
+        if (!groupedByMonth[monthKey]) {
+            groupedByMonth[monthKey] = {};
+        }
+        if (!groupedByMonth[monthKey][transaction.date]) {
+            groupedByMonth[monthKey][transaction.date] = [];
+        }
+        groupedByMonth[monthKey][transaction.date].push(transaction);
     });
 
     function formatDate(dateString) {
@@ -39,6 +46,14 @@ export default function ExpenseList({ transactions, onDelete, onEdit }) {
             return `-$${Math.abs(amount).toFixed(2)}`;
         }
         return `$${amount.toFixed(2)}`;
+    }
+    function formatMonth(monthString) {
+        const date = new Date(monthString + "-01T00:00:00");
+
+        return date.toLocaleDateString("en-US", {
+            month: "long",
+            year: "numeric",
+        });
     }
 
     function getCategoryIcon(transaction) {
@@ -80,29 +95,46 @@ export default function ExpenseList({ transactions, onDelete, onEdit }) {
             </div>
             <h2 className="mb-3 text-sm font-semibold text-zinc-500">Recent transactions</h2>
             <div className="max-h-96 overflow-y-auto pr-2">
-                {Object.entries(groupedTransactions).map(([date, items]) => (
-                    <div key={date} className="mb-5">
-                        <h3 className="mb-1 text-xs font-semibold text-zinc-400">{formatDate(date)}</h3>
-                        {items.map((transaction) => (
-                            <div key={transaction.id}
-                                onClick={() => setSelectedTransaction(transaction)}
-                                className="flex cursor-pointer items-center justify-between border-b border-zinc-100 py-4">
-                                <div className="flex items-center gap-4">
-                                    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-indigo-50 text-xl">
-                                        {getCategoryIcon(transaction)}
-                                    </div>
-                                    <div>
-                                        <p className="font-medium text-zinc-800">{transaction.category}</p>
-                                        <p className="text-sm text-zinc-400">{transaction.note}</p>
-                                    </div>
-                                </div>
-                                <div className="text-right">
-                                    <p className="font-semibold text-zinc-800">{formatMoney(transaction.amount, transaction.type)}</p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                ))}
+                {Object.entries(groupedByMonth)
+                    .sort(([monthA], [monthB]) => monthB.localeCompare(monthA))
+                    .map(([month, dates]) => (
+                        <div key={month}>
+                            <button type='button' onClick={() => setOpenMonth(openMonth === month ? null : month)}
+                                className='flex w-full items-center justify-between py-3 text-left'>
+                                <span className='font-semibold text-zinc-700'>{formatMonth(month)}</span>
+                                <span className='text-zinc-400'>{openMonth === month ? "▲" : "▼"}</span>
+                            </button>
+                            {openMonth === month &&
+                                (<div>
+                                    {Object.entries(dates)
+                                        .sort(([dateA], [dateB]) => new Date(dateB) - new Date(dateA))
+                                        .map(([date, items]) => (
+                                            <div key={date} className="mb-5">
+                                                <h3 className="mb-1 text-xs font-semibold text-zinc-400">{formatDate(date)}</h3>
+                                                {items.map((transaction) => (
+                                                    <div key={transaction.id}
+                                                        onClick={() => setSelectedTransaction(transaction)}
+                                                        className="flex cursor-pointer items-center justify-between border-b border-zinc-100 py-4">
+                                                        <div className="flex items-center gap-4">
+                                                            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-indigo-50 text-xl">
+                                                                {getCategoryIcon(transaction)}
+                                                            </div>
+                                                            <div>
+                                                                <p className="font-medium text-zinc-800">{transaction.category}</p>
+                                                                <p className="text-sm text-zinc-400">{transaction.note}</p>
+                                                            </div>
+                                                        </div>
+                                                        <div className="text-right">
+                                                            <p className="font-semibold text-zinc-800">{formatMoney(transaction.amount, transaction.type)}</p>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        ))
+                                    }
+                                </div>)}
+                        </div>
+                    ))}
             </div>
             {selectedTransaction && (
                 <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/30'
