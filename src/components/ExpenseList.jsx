@@ -2,7 +2,7 @@ import { useState } from 'react';
 import categories from '../data/iconPool.js';
 import earnings from '../data/earnings.js';
 
-export default function ExpenseList({ transactions, onDelete, onEdit }) {
+export default function ExpenseList({ transactions, onDelete, onEdit, onOpenAnalysis }) {
     const [selectedTransaction, setSelectedTransaction] = useState(null);
     const [openMonth, setOpenMonth] = useState(
         new Date().toISOString().slice(0, 7)
@@ -68,12 +68,23 @@ export default function ExpenseList({ transactions, onDelete, onEdit }) {
     return (
         <div className="flex flex-col gap-4 py-2">
             <div className='mb-6 rounded-2xl bg-indigo-50 p-5'>
-                <p className='text-sm font-medium text-zinc-500'>
-                    Current Balance
-                </p>
-                <p className='mt-1 text-3xl font-semibold tracking-tight text-zinc-800'>
-                    {formatMoney(currentBalance)}
-                </p>
+                <div  className='flex items-start justify-between gap-5'>
+                    <div>
+                        <p className='text-sm font-medium text-zinc-500'>
+                            Current Balance
+                        </p>
+                        <p className='mt-1 text-3xl font-semibold tracking-tight text-zinc-800'>
+                            {formatMoney(currentBalance)}
+                        </p>
+                    </div>
+                    <button
+                        onClick={onOpenAnalysis}
+                        className="mt-1 flex items-center gap-1 text-sm font-medium text-indigo-400 transition hover:text-indigo-600"
+                    >
+                        <span>Monthly Analysis</span>
+                        <span className="text-base">→</span>
+                    </button>
+                </div>
                 <div className="mt-5 grid grid-cols-2 gap-4">
                     <div className='rounded-xl bg-white p-4'>
                         <p className="text-xs font-medium text-zinc-400">
@@ -93,6 +104,7 @@ export default function ExpenseList({ transactions, onDelete, onEdit }) {
                     </div>
                 </div>
             </div>
+
             <h2 className="mb-3 text-sm font-semibold text-zinc-500">Recent transactions</h2>
             <div className="max-h-96 overflow-y-auto pr-2">
                 {Object.entries(groupedByMonth)

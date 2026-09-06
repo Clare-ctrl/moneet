@@ -97,9 +97,10 @@ const AddTransactionModal = forwardRef(function AddTransactionModal({ onClose, o
 
     return createPortal(
         <dialog ref={dialog}
-            className="m-auto w-[calc(100%-2rem)] max-w-lg rounded-3xl shadow-xl overflow-hidden bg-white p-2 font-sans backdrop:bg-zinc-900/40">
+            className="m-auto w-[calc(100%-1rem)] max-w-lg max-h-[92vh]
+            rounded-3xl shadow-xl overflow-hidden bg-white p-2 font-sans backdrop:bg-zinc-900/40">
             <div className="flex max-h-[90vh] flex-col">
-                <div className="overflow-y-auto p-6">
+                <div className="overflow-y-auto p-4 sm:p-6">
                     <div className="mb-6 flex rounded-xl bg-zinc-100 p-1">
                         <button
                             type="button"
@@ -136,15 +137,15 @@ const AddTransactionModal = forwardRef(function AddTransactionModal({ onClose, o
                         <label className="mb-4 block text-sm font-semibold tracking-tight text-zinc-700">
                             {type === "expense" ? "Expense Category" : "Income Category"}
                         </label>
-                        <div className='grid grid-cols-3 sm:grid-cols-4 gap-3'>
+                        <div className='grid grid-cols-3 gap-2 sm:grid-cols-4 sm:gap-3'>
                             {currentCategories.map((item) => (
                                 <button key={item.name} type='button' onClick={() => setCategory(item.name)}
-                                    className={`flex flex-col items-center justify-center rounded-2xl border p-3 transition
+                                    className={`flex min-w-0 flex-col items-center justify-center rounded-2xl border p-3 sm:p-3 transition
                     ${category === item.name
                                             ? "border-indigo-400 bg-indigo-100 text-indigo-600"
                                             : "border-zinc-200 bg-white text-zinc-600 hover:border-indigo-200 hover:bg-zinc-100"}`}>
                                     <span className='text-2xl'>{item.icon}</span>
-                                    <span className='mt-1 text-xs font-medium'>{item.name}</span>
+                                    <span className='mt-1 text-[10px] sm:text-xs font-medium text-center leading-tight break-word'>{item.name}</span>
                                 </button>
                             ))}
                         </div>
@@ -153,7 +154,8 @@ const AddTransactionModal = forwardRef(function AddTransactionModal({ onClose, o
                         <label className="mb-2 block text-sm font-medium text-zinc-700">
                             {type === "expense" ? "Expense Date" : "Income Date"}
                         </label>
-                        <input className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-800 outline-none transition
+                        <input className="w-full min-w-0 max-w-full
+                        rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-800 outline-none transition
                      focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
                             type="date"
                             value={date}
