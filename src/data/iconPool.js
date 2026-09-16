@@ -16,5 +16,10 @@ const iconPool = [
     { name: "Gift", icon: "🎁" },
     { name: "Subscription", icon: "💳"},
     { name: "Other", icon: "•••" },
+     { name: "Salary", icon: "💵" },
+  { name: "Bonus", icon: "💰" },
+  { name: "Refund", icon: "↩️" },
+  { name: "Gift", icon: "🎁" },
+  { name: "Stocks", icon: "📈" },
 ];
 export default iconPool;
