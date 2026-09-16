@@ -154,7 +154,7 @@ export default function ExpenseList({ transactions, onDelete, onEdit, onOpenAnal
             {selectedTransaction && (
                 <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/30'
                     onClick={() => setSelectedTransaction(null)}>
-                    <div className='w-72 rounded-2xl bg-white p-6 shadow-xl'
+                    <div className='w-72 rounded-2xl bg-indigo-100 p-6 shadow-xl'
                         onClick={(e) => e.stopPropagation()}>
                         <p className='mb-4 font-medium text-zinc-800'>
                             {selectedTransaction.category}
